@@ -1,0 +1,23 @@
+{
+  "kind": "singleType",
+  "collectionName": "queue_settings",
+  "info": {
+    "singularName": "queue-setting",
+    "pluralName": "queue-settings",
+    "displayName": "Queue Setting"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {
+    "isPlaying": {
+      "type": "boolean"
+    },
+    "currentTrack": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::audio-broadcast.track"
+    }
+  }
+}
