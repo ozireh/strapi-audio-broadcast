@@ -4,7 +4,7 @@ module.exports = ({ strapi }) => ({
   async find(ctx) {
     try {
       ctx.body = await strapi 
-        .plugin('audio-broadcast')
+        .plugin('strapi-audio-broadcast')
         .service('track')
         .find()
     } catch (error) {

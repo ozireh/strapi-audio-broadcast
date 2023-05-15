@@ -6,10 +6,8 @@ module.exports = ({ strapi }) => ({
       const ctx = strapi.requestContext.get()
   
       const queueSettings = await strapi.entityService.findOne(
-        'plugin::audio-broadcast.queue-setting',
-        {
-          ...ctx.query,
-        }
+        'plugin::strapi-audio-broadcast.queue-setting',
+        ctx.query
       );
   
       return queueSettings;

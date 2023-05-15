@@ -1,9 +1,9 @@
 {
-  "name": "audio-broadcast",
+  "name": "strapi-audio-broadcast",
   "version": "0.0.0",
   "description": "This is the description of the plugin.",
   "strapi": {
-    "name": "audio-broadcast",
+    "name": "strapi-audio-broadcast",
     "description": "Description of Audio Broadcast plugin",
     "kind": "plugin",
     "displayName": "Audio Broadcast"

@@ -17,7 +17,7 @@
     "currentTrack": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "plugin::audio-broadcast.track"
+      "target": "plugin::strapi-audio-broadcast.track"
     }
   }
 }

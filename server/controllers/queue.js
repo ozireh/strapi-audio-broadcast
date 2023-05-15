@@ -3,7 +3,7 @@
 module.exports = ({ strapi }) => ({
   stream(ctx) {
     ctx.body = strapi
-      .plugin('audio-broadcast')
+      .plugin('strapi-audio-broadcast')
       .service('queue')
       .stream()
   },
