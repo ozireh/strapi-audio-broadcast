@@ -7,29 +7,33 @@
 import React, { useEffect, useState } from 'react';
 // import PropTypes from 'prop-types';
 import pluginId from '../../pluginId';
-import { BaseHeaderLayout, Box, Button, ContentLayout, HeaderLayout, Table, Thead, Tr, Th, Tbody, Td, Typography, BaseCheckbox, Tooltip, ToggleInput, Flex, Grid, IconButton } from '@strapi/design-system';
+import { BaseHeaderLayout, Box, Button, ContentLayout, HeaderLayout, Table, Thead, Tr, Th, Tbody, Td, Typography, BaseCheckbox, Tooltip, ToggleInput, Flex, Grid, IconButton, IconButtonGroup, ModalLayout, ModalHeader, ModalBody, TextInput, CarouselInput, CarouselSlide, CarouselImage, CarouselActions } from '@strapi/design-system';
 import trackRequests from '../../api/track';
-import { ArrowDown, ArrowUp, Information } from '@strapi/icons';
+import { ArrowDown, ArrowUp, Information, Pencil, Play, Plus, Trash } from '@strapi/icons';
 import queueSettingsRequests from '../../api/queueSettings';
 
 const HomePage = () => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [tracks, setTracks] = useState([])
   const [settings, setSettings] = useState({})
+
   useEffect(() => {
     (async () => {
       const trackResponse = await trackRequests.getTracks()
       const settingsResponse = await queueSettingsRequests.getSettings()
-      
+
       setTracks(trackResponse?.data || [])
       setSettings(settingsResponse?.data || {})
-
     })()
   }, []);
 
   useEffect(() => {
-    console.log(settings);
-  }, [settings])
+    if (tracks.length) {
+      tracks.forEach((track, index) => {
+        console.log(track.audioFile.url);
+      })
+    }
+  }, [tracks])
   
 
   return (
@@ -37,8 +41,11 @@ const HomePage = () => {
 
       <Box background="neutral100">
         <BaseHeaderLayout
-          title={pluginId}
+          title="Audio Broadcast"
           subtitle="This is the plugin&apos;s description"
+          // primaryAction={
+          //   <Button onClick={() => setCreateTrackModal(true)} startIcon={<Plus />}>Add a track</Button>
+          // }
         />
         <ContentLayout>
           <Grid
@@ -66,7 +73,7 @@ const HomePage = () => {
                     <BaseCheckbox aria-label="Select all entries" />
                   </Th>
                   <Th>
-                    <Typography variant="sigma">ID</Typography>
+                    <Typography variant="sigma">MP3</Typography>
                   </Th>
                   <Th>
                     <Typography variant="sigma">Title</Typography>
@@ -74,9 +81,6 @@ const HomePage = () => {
                   <Th>
                     <Typography variant="sigma">Order</Typography>
                   </Th>
-                  {/* <Th>
-                    <Typography variant="sigma">Description</Typography>
-                  </Th> */}
                 </Tr>
               </Thead>
               <Tbody>
@@ -86,15 +90,21 @@ const HomePage = () => {
                       <BaseCheckbox aria-label={`Select`} />
                     </Td>
                     <Td>
-                      <Typography textColor="neutral800">{ entry.id }</Typography>
+                        { entry?.audioFile?.src }
+                        <audio controls>
+                          <source src={entry?.audioFile?.url} type="audio/mpeg" />
+                          Your browser does not support the audio element.
+                        </audio>
+
                     </Td>
                     <Td>
                       <Typography textColor="neutral800">{ entry?.title }</Typography>
-                      {/* <Avatar src={entry.cover} alt={entry.contact} /> */}
                     </Td>
                     <Td>
-                      <IconButton label="Up" icon={<ArrowUp />} />
-                      <IconButton label="Down" icon={<ArrowDown />} />
+                      <IconButtonGroup>
+                        <IconButton label="Up" icon={<ArrowUp />} />
+                        <IconButton label="Down" icon={<ArrowDown />} />
+                      </IconButtonGroup>
                     </Td>
                   </Tr>
                   

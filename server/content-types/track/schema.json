@@ -18,10 +18,7 @@
     },
     "coverImage": {
       "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
+        "images"
       ],
       "type": "media",
       "multiple": false,
@@ -35,6 +32,12 @@
       "multiple": false,
       "required": true,
       "configurable": false
+    },
+    "order": {
+      "type": "integer",
+      "increment": true,
+      "configurable": false,
+      "editable": false
     }
   }
 }

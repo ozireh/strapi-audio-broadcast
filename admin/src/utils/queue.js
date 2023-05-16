@@ -69,6 +69,7 @@ class Queue {
       const url = "http://127.0.0.1:1337" + file?.audioFile?.url
       const bitrate = await this.getTrackBitrate(url)
       return {
+        id: file?.audioFile?.id,
         url: url,
         bitrate
       }

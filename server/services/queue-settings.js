@@ -1,4 +1,5 @@
 'use strict';
+const Queue = require('../../admin/src/utils/queue')
 
 module.exports = ({ strapi }) => ({
   async find() {
@@ -13,6 +14,24 @@ module.exports = ({ strapi }) => ({
       return queueSettings;
     } catch (error) {
       throw error  
+    }
+  },
+  async init() {
+    strapi.queue = new Queue(strapi)
+    const ctx = strapi.requestContext.get()
+    const tracks = await strapi.entityService.findMany(
+      'plugin::strapi-audio-broadcast.track',
+      {
+        _limit: -1,
+        populate: [
+          "audioFile"
+        ]
+      }
+    );
+
+    if (tracks.length) {
+      await strapi.queue.loadTracksFromURLs(tracks)
+      // strapi.queue.play()
     }
   },
 });
