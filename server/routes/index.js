@@ -52,4 +52,13 @@ module.exports = [
       auth: false,
     },
   },
+  {
+    method: 'GET',
+    path: '/queue-setting/current-track',
+    handler: 'queue-settings.getCurrentTrack',
+    config: {
+      policies: [],
+      auth: false,
+    },
+  }
 ];

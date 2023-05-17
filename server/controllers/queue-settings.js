@@ -24,5 +24,11 @@ module.exports = ({ strapi }) => ({
       .plugin('strapi-audio-broadcast')
       .service('queue-settings')
       .pause()
+  },
+  async getCurrentTrack(ctx) {
+    ctx.body = await strapi
+      .plugin('strapi-audio-broadcast')
+      .service('queue-settings')
+      .getCurrentTrack()
   }
 });

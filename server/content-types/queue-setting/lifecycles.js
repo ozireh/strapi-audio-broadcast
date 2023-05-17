@@ -11,7 +11,10 @@ module.exports = {
   afterUpdate: async (event) => {
     console.log("afterUpdate");
 
+    
     const settings = event?.result;
+    
+    strapi.queue.queue = settings.queue
 
     const tracks = await strapi
       .plugin('strapi-audio-broadcast')

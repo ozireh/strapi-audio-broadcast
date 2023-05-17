@@ -15,6 +15,8 @@ import queueSettingsRequests from '../../api/queueSettings';
 const HomePage = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [initialSettings, setInitialSettings] = useState(null)
+  const [currentTrack, setCurrentTrack] = useState(null)
+  const [currentTrackInterval, setCurrentTrackInterval] = useState(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [tracks, setTracks] = useState([])
   const [queue, setQueue] = useState([])
@@ -23,6 +25,8 @@ const HomePage = () => {
   const queuedTracks = queue.map(id => tracks.find((track) => track.id === id))
 
   const hasSettingsChanged = !!initialSettings && JSON.stringify(initialSettings.queue) !== JSON.stringify(settings.queue)
+
+  // Functions 
 
   const addTrackToQueue = track => {
     if (!queue.includes(track.id)) {
@@ -52,6 +56,8 @@ const HomePage = () => {
     newQueue.splice(index, 1)
     setQueue(newQueue)
   }
+
+  // Async functions
 
   const saveSettings = async () => {
     setIsLoading(true)
@@ -90,6 +96,12 @@ const HomePage = () => {
     setIsPlaying(false)
   }
 
+  const checkCurrentTrack = async () => {
+    const track = await queueSettingsRequests.getCurrentTrack()
+    setCurrentTrack(track?.data || null)
+  }
+
+  // Effects
 
   useEffect(() => {
     (async () => {
@@ -115,6 +127,17 @@ const HomePage = () => {
   useEffect(() => {
     setIsPlaying(initialSettings?.isPlaying)
   }, [initialSettings])
+
+  useEffect(() => {
+    if (isPlaying) {
+      checkCurrentTrack()
+      setCurrentTrackInterval(setInterval(checkCurrentTrack, 20000))
+    } else {
+      clearInterval(currentTrackInterval)
+      setCurrentTrackInterval(null)
+    }
+  }, [isPlaying])
+  
   
   useEffect(() => {
     setSettings({
@@ -157,7 +180,7 @@ const HomePage = () => {
                   <Button
                     startIcon={<Play />}
                     loading={!!isPlaying}
-                    disabled={!!isPlaying || !queue.length}
+                    disabled={!!isPlaying || !queue.length && !initialSettings.queue.length}
                     onClick={play}
                   >
                     { isPlaying ? 'On Air' : 'Stream' }
@@ -174,6 +197,20 @@ const HomePage = () => {
                   }
                 </>
               }
+
+              endActions={
+                currentTrack && (
+                  <>
+                    <Box padding={2}>
+                      <Typography variant="sigma">Now Playing:</Typography>
+                    </Box>
+                    <Box padding={2}>
+                      <Typography variant="sigma">{ currentTrack?.title }</Typography>
+                    </Box>
+                  </>
+                )
+              }
+
             />
 
             {/* all track can be added */}

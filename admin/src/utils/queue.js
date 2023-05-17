@@ -17,6 +17,7 @@ class Queue {
   }) {
     this.index = 0
     this.tracks = []
+    this.queue = []
     this.clients = new Map()
     this.currentTrack = null
     this.stream = null
@@ -98,14 +99,17 @@ class Queue {
       : 128000
   }
 
-  getNextTrack() {        
-    if (this.index >= this.tracks.length - 1) {
+  getNextTrack() {
+    const currentQueueIndex = this.queue.findIndex((id) => id === this.currentTrack?.trackId) || 0
+    const nextQueueIndex = currentQueueIndex + 1
+
+    if (!nextQueueIndex || nextQueueIndex >= this.queue.length) {
       this.index = 0
     } else {
-      this.index++
+      this.index = nextQueueIndex
     }
-    
-    const track = this.tracks[this.index]
+
+    const track = this.tracks.find((track) => track.trackId === this.queue[this.index])
 
     console.log("choices", this.tracks.map((track) => track.url));
     console.log(`Playing track number ${this.index}: ${track.url}`)
