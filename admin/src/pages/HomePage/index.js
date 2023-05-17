@@ -7,7 +7,7 @@
 import React, { useEffect, useState } from 'react';
 // import PropTypes from 'prop-types';
 import pluginId from '../../pluginId';
-import { BaseHeaderLayout, Box, Button, ContentLayout, HeaderLayout, Table, Thead, Tr, Th, Tbody, Td, Typography, BaseCheckbox, Tooltip, ToggleInput, Flex, Grid, IconButton, IconButtonGroup, ModalLayout, ModalHeader, ModalBody, TextInput, CarouselInput, CarouselSlide, CarouselImage, CarouselActions, ActionLayout, Tag } from '@strapi/design-system';
+import { BaseHeaderLayout, Box, Button, ContentLayout, HeaderLayout, Table, Thead, Tr, Th, Tbody, Td, Typography, BaseCheckbox, Tooltip, ToggleInput, Flex, Grid, IconButton, IconButtonGroup, ModalLayout, ModalHeader, ModalBody, TextInput, CarouselInput, CarouselSlide, CarouselImage, CarouselActions, ActionLayout, Tag, EmptyStateLayout } from '@strapi/design-system';
 import trackRequests from '../../api/track';
 import { ArrowDown, ArrowUp, Information, Pencil, Play, Plus, Trash } from '@strapi/icons';
 import queueSettingsRequests from '../../api/queueSettings';
@@ -113,6 +113,10 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
+    setIsPlaying(initialSettings?.isPlaying)
+  }, [initialSettings])
+  
+  useEffect(() => {
     setSettings({
       ...settings,
       queue: queue
@@ -178,18 +182,20 @@ const HomePage = () => {
               startActions={
                 <>
                   {
-                    nonQueuedTracks?.length && nonQueuedTracks
-                      .map((item, index) =>
-                        <Box
-                          key={index}
-                          paddingTop={2}
-                          onClick={() => addTrackToQueue(item)}
-                        >
-                          <Tag key={index} icon={<Plus aria-hidden />}>
-                            { item.title }
-                          </Tag>
-                        </Box>
-                      )
+                    nonQueuedTracks?.length ? (
+                      nonQueuedTracks
+                        .map((item, index) =>
+                          <Box
+                            key={index}
+                            paddingTop={2}
+                            onClick={() => addTrackToQueue(item)}
+                          >
+                            <Tag key={index} icon={<Plus aria-hidden />}>
+                              { item.title }
+                            </Tag>
+                          </Box>
+                        )
+                    ) : null
                   }
                 </>
               }
@@ -198,7 +204,7 @@ const HomePage = () => {
             {/* queue */}
 
             {
-              queuedTracks?.length && (
+              queuedTracks?.length ? (
                 <Table>  
                   <Thead>
                     <Tr>
@@ -253,6 +259,10 @@ const HomePage = () => {
                     }
                   </Tbody>
                 </Table>
+              ) : (
+                <Box background="neutral100">
+                  <EmptyStateLayout content="You don't have any content yet..." />
+                </Box>
               )
             }
 

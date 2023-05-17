@@ -32,12 +32,6 @@
       "multiple": false,
       "required": true,
       "configurable": false
-    },
-    "order": {
-      "type": "integer",
-      "increment": true,
-      "configurable": false,
-      "editable": false
     }
   }
 }
