@@ -198,26 +198,29 @@ const HomePage = () => {
                   }
                 </>
               }
-
-              endActions={
-                currentTrack && (
-                  <Box>
-                    <Flex justifyContent="end">
-                      <Box padding={1}>
-                        <Typography variant="sigma">Now Playing:</Typography>
-                      </Box>
-                      <Box padding={1}>
-                        <Typography variant="sigma">{ currentTrack?.title }</Typography>
-                      </Box>
-                    </Flex>
-                    <Link href={`${window.location.origin}/strapi-audio-broadcast/stream`} isExternal>
-                      Audio stream is available here
-                    </Link>
-                  </Box>
-                )
-              }
-
             />
+
+            {
+              currentTrack && (
+                <ActionLayout
+                  startActions={
+                    <Box>
+                      <Flex>
+                        <Box padding={1}>
+                          <Typography variant="sigma">Now Playing:</Typography>
+                        </Box>
+                        <Box padding={1}>
+                          <Typography variant="sigma">{ currentTrack?.title }</Typography>
+                        </Box>
+                      </Flex>
+                      <Link href={`${window.location.origin}/strapi-audio-broadcast/stream`} isExternal>
+                        Audio stream is available here
+                      </Link>
+                    </Box>
+                  }
+                />
+              )
+            }
 
             {/* all track can be added */}
 
