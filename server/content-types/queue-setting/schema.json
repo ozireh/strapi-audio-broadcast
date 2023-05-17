@@ -10,15 +10,15 @@
     "draftAndPublish": false,
     "comment": ""
   },
+  "pluginOptions": {
+    "content-manager": {
+      "visible": false
+    }
+  },
   "attributes": {
     "isPlaying": {
       "type": "boolean",
       "default": false
-    },
-    "currentTrack": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "plugin::strapi-audio-broadcast.track"
     },
     "queue": {
       "type": "json",

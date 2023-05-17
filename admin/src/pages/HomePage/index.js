@@ -7,9 +7,9 @@
 import React, { useEffect, useState } from 'react';
 // import PropTypes from 'prop-types';
 import pluginId from '../../pluginId';
-import { BaseHeaderLayout, Box, Button, ContentLayout, HeaderLayout, Table, Thead, Tr, Th, Tbody, Td, Typography, BaseCheckbox, Tooltip, ToggleInput, Flex, Grid, IconButton, IconButtonGroup, ModalLayout, ModalHeader, ModalBody, TextInput, CarouselInput, CarouselSlide, CarouselImage, CarouselActions, ActionLayout, Tag, EmptyStateLayout, Link } from '@strapi/design-system';
+import { BaseHeaderLayout, Box, Button, ContentLayout, HeaderLayout, Table, Thead, Tr, Th, Tbody, Td, Typography, BaseCheckbox, Tooltip, ToggleInput, Flex, Grid, IconButton, IconButtonGroup, ModalLayout, ModalHeader, ModalBody, TextInput, CarouselInput, CarouselSlide, CarouselImage, CarouselActions, ActionLayout, Tag, EmptyStateLayout, Link, Loader } from '@strapi/design-system';
 import trackRequests from '../../api/track';
-import { ArrowDown, ArrowUp, Information, Pencil, Play, Plus, Trash } from '@strapi/icons';
+import { ArrowDown, ArrowUp, CheckCircle, Information, Pencil, Play, Plus, Trash } from '@strapi/icons';
 import queueSettingsRequests from '../../api/queueSettings';
 
 const HomePage = () => {
@@ -165,7 +165,6 @@ const HomePage = () => {
             </Button>
           }
         />
-        <ContentLayout>
           <Grid
             gridCols={1}
             gap={{
@@ -173,7 +172,7 @@ const HomePage = () => {
               tablet: 2,
               mobile: 1
             }}
-          >
+            >
 
             <ActionLayout
               startActions={
@@ -183,14 +182,14 @@ const HomePage = () => {
                     loading={!!isPlaying}
                     disabled={!!isPlaying || !queue.length || !initialSettings?.queue?.length || !!hasSettingsChanged}
                     onClick={play}
-                  >
+                    >
                     { isPlaying ? 'On Air' : 'Stream' }
                   </Button>
                   {
                     !!isPlaying && (
                       <Button
-                        onClick={pause}
-                        variant='danger'
+                      onClick={pause}
+                      variant='danger'
                       >
                         Stop
                       </Button>
@@ -232,9 +231,9 @@ const HomePage = () => {
                       nonQueuedTracks
                         .map((item, index) =>
                           <Box
-                            key={index}
-                            paddingTop={2}
-                            onClick={() => addTrackToQueue(item)}
+                          key={index}
+                          paddingTop={2}
+                          onClick={() => addTrackToQueue(item)}
                           >
                             <Tag key={index} icon={<Plus aria-hidden />}>
                               { item.title }
@@ -249,71 +248,85 @@ const HomePage = () => {
 
             {/* queue */}
 
-            {
-              queuedTracks?.length ? (
-                <Table>  
-                  <Thead>
-                    <Tr>
-                      <Th>
-                        <Typography variant="sigma">MP3</Typography>
-                      </Th>
-                      <Th>
-                        <Typography variant="sigma">Title</Typography>
-                      </Th>
-                      <Th>
-                        <Typography variant="sigma">Order</Typography>
-                      </Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {
-                      queuedTracks.map((entry) => (
-                        <Tr key={`queued-track-${entry.id}`}>
-                          <Td>
-                            <Box padding={2}>
-                              <audio controls>
-                                <source src={entry?.audioFile?.url} type="audio/mpeg" />
-                                Your browser does not support the audio element.
-                              </audio>
-                            </Box>
-                          </Td>
-                          <Td>
-                            <Typography textColor="neutral800">{ entry?.title }</Typography>
-                          </Td>
-                          <Td>
-                            <IconButtonGroup>
-                              <IconButton
-                                label="Up"
-                                icon={<ArrowUp />}
-                                onClick={() => moveTrackUp(entry.id)}
-                              />
-                              <IconButton
-                                label="Down"
-                                icon={<ArrowDown />}
-                                onClick={() => moveTrackDown(entry.id)}
-                              />
-                              <IconButton
-                                label="Delete"
-                                icon={<Trash />}
-                                onClick={() => removeTrackFromQueue(entry.id)}
-                              />
-                            </IconButtonGroup>
-                          </Td>
-                        </Tr>
-                        
-                      ))
-                    }
-                  </Tbody>
-                </Table>
-              ) : (
-                <Box background="neutral100">
-                  <EmptyStateLayout content="You don't have any content yet..." />
-                </Box>
-              )
-            }
-
+            <ContentLayout>
+              {
+                queuedTracks?.length ? (
+                  <Table>  
+                    <Thead>
+                      <Tr>
+                        <Th>
+                          <Typography variant="sigma">State</Typography>
+                        </Th>
+                        <Th>
+                          <Typography variant="sigma">MP3</Typography>
+                        </Th>
+                        <Th>
+                          <Typography variant="sigma">Title</Typography>
+                        </Th>
+                        <Th>
+                          <Typography variant="sigma">Order</Typography>
+                        </Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {
+                        queuedTracks.map((entry) => (
+                          <Tr key={`queued-track-${entry.id}`}>
+                            <Td>
+                              {
+                                !currentTrack ? (
+                                  <Button variant='secondary'>Queuted</Button>
+                                ) : currentTrack?.id === entry?.id ? (
+                                  <Loader small />
+                                ) : (
+                                  <Button variant='tertiary'>Waiting</Button>
+                                )
+                              }
+                            </Td>
+                            <Td>
+                              <Box padding={2}>
+                                <audio controls>
+                                  <source src={entry?.audioFile?.url} type="audio/mpeg" />
+                                  Your browser does not support the audio element.
+                                </audio>
+                              </Box>
+                            </Td>
+                            <Td>
+                              <Typography textColor="neutral800">{ entry?.title }</Typography>
+                            </Td>
+                            <Td>
+                              <IconButtonGroup>
+                                <IconButton
+                                  label="Up"
+                                  icon={<ArrowUp />}
+                                  onClick={() => moveTrackUp(entry.id)}
+                                />
+                                <IconButton
+                                  label="Down"
+                                  icon={<ArrowDown />}
+                                  onClick={() => moveTrackDown(entry.id)}
+                                />
+                                <IconButton
+                                  label="Delete"
+                                  icon={<Trash />}
+                                  onClick={() => removeTrackFromQueue(entry.id)}
+                                />
+                              </IconButtonGroup>
+                            </Td>
+                          </Tr>
+                          
+                        ))
+                      }
+                    </Tbody>
+                  </Table>
+                ) : (
+                  <Box background="neutral100">
+                    <EmptyStateLayout content="You don't have any content yet..." />
+                  </Box>
+                )
+              }
+            </ContentLayout>
           </Grid>
-        </ContentLayout>
       </Box>
     </div>
   );
