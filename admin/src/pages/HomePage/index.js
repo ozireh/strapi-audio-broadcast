@@ -157,7 +157,7 @@ const HomePage = () => {
                   <Button
                     startIcon={<Play />}
                     loading={!!isPlaying}
-                    disabled={!!isPlaying}
+                    disabled={!!isPlaying || !queue.length}
                     onClick={play}
                   >
                     { isPlaying ? 'On Air' : 'Play' }
