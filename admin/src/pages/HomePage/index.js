@@ -160,7 +160,7 @@ const HomePage = () => {
                     disabled={!!isPlaying || !queue.length}
                     onClick={play}
                   >
-                    { isPlaying ? 'On Air' : 'Play' }
+                    { isPlaying ? 'On Air' : 'Stream' }
                   </Button>
                   {
                     !!isPlaying && (
