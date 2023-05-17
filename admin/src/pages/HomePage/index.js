@@ -7,7 +7,7 @@
 import React, { useEffect, useState } from 'react';
 // import PropTypes from 'prop-types';
 import pluginId from '../../pluginId';
-import { BaseHeaderLayout, Box, Button, ContentLayout, HeaderLayout, Table, Thead, Tr, Th, Tbody, Td, Typography, BaseCheckbox, Tooltip, ToggleInput, Flex, Grid, IconButton, IconButtonGroup, ModalLayout, ModalHeader, ModalBody, TextInput, CarouselInput, CarouselSlide, CarouselImage, CarouselActions, ActionLayout, Tag, EmptyStateLayout } from '@strapi/design-system';
+import { BaseHeaderLayout, Box, Button, ContentLayout, HeaderLayout, Table, Thead, Tr, Th, Tbody, Td, Typography, BaseCheckbox, Tooltip, ToggleInput, Flex, Grid, IconButton, IconButtonGroup, ModalLayout, ModalHeader, ModalBody, TextInput, CarouselInput, CarouselSlide, CarouselImage, CarouselActions, ActionLayout, Tag, EmptyStateLayout, Link } from '@strapi/design-system';
 import trackRequests from '../../api/track';
 import { ArrowDown, ArrowUp, Information, Pencil, Play, Plus, Trash } from '@strapi/icons';
 import queueSettingsRequests from '../../api/queueSettings';
@@ -212,6 +212,14 @@ const HomePage = () => {
               }
 
             />
+
+            {
+              isPlaying && (
+                <Link href={`${window.location.origin}/strapi-audio-broadcast/stream`} isExternal>
+                  Audio stream is available here
+                </Link>
+              )
+            }
 
             {/* all track can be added */}
 
