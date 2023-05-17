@@ -4,10 +4,13 @@
 
 module.exports = ({ strapi }) => ({
   async find() {
-    const ctx = strapi.requestContext.get()
     const tracks = await strapi.entityService.findMany(
       'plugin::strapi-audio-broadcast.track',
-      ctx.query
+      {
+        populate: [
+          "audioFile"
+        ]
+      }
     );
 
     return tracks;

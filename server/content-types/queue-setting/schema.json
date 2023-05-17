@@ -12,12 +12,17 @@
   },
   "attributes": {
     "isPlaying": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     },
     "currentTrack": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::strapi-audio-broadcast.track"
+    },
+    "queue": {
+      "type": "json",
+      "default": []
     }
   }
 }

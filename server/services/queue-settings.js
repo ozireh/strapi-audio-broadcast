@@ -16,8 +16,12 @@ module.exports = ({ strapi }) => ({
       throw error  
     }
   },
-  async init() {
-    strapi.queue = new Queue(strapi)
+  async init() {    
+    strapi.queue = new Queue({
+      protocol: strapi.config.get('server.protocol'),
+      host: strapi.config.get('server.host'),
+      port: strapi.config.get('server.port'),
+    })
     const ctx = strapi.requestContext.get()
     const tracks = await strapi.entityService.findMany(
       'plugin::strapi-audio-broadcast.track',
@@ -29,9 +33,62 @@ module.exports = ({ strapi }) => ({
       }
     );
 
-    if (tracks.length) {
-      await strapi.queue.loadTracksFromURLs(tracks)
-      // strapi.queue.play()
+    const queueSettings = await strapi.entityService.findMany('plugin::strapi-audio-broadcast.queue-setting');
+
+
+    const queuedTracks = queueSettings.queue.map(id => tracks.find((track) => track.id === id))
+
+    if (queuedTracks.length) {
+      setTimeout(async () => {
+        await strapi.queue.loadTracksFromURLs(queuedTracks)
+      }, 1000);
     }
   },
+  async update(data) {
+    try {
+      const queueSettings = await strapi.entityService.update(
+        'plugin::strapi-audio-broadcast.queue-setting',
+        data?.id,
+        {
+          data: {
+            ...data
+          }
+        }
+      );
+  
+      return queueSettings;
+    } catch (error) {
+      throw error  
+    }
+  },
+  async play() {
+    await strapi.entityService.update(
+      'plugin::strapi-audio-broadcast.queue-setting',
+      1,
+      {
+        data: {
+          isPlaying: true
+        }
+      }
+    );
+
+    strapi.queue.play()
+
+    return true
+  },
+  async pause() {
+    await strapi.entityService.update(
+      'plugin::strapi-audio-broadcast.queue-setting',
+      1,
+      {
+        data: {
+          isPlaying: false
+        }
+      }
+    );
+
+    strapi.queue.pause()
+
+    return true
+  }
 });

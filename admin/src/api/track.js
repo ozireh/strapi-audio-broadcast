@@ -2,13 +2,7 @@ import axiosInstance from "../utils/axiosInstance";
 
 const trackRequests = {
   getTracks: async () => {
-    const data = await axiosInstance.get('/strapi-audio-broadcast/tracks', {
-      params: {
-        populate: [
-          "audioFile"
-        ]
-      }
-    })
+    const data = await axiosInstance.get('/strapi-audio-broadcast/tracks')
     return data
   },
 };

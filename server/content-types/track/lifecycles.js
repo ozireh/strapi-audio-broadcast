@@ -1,23 +1,23 @@
 module.exports = {
-  afterCreate: async (event) => {
-    console.log("afterCreate", event);
+  // afterCreate: async (event) => {
+  //   console.log("afterCreate", event);
 
-    const track = event?.result;
-    await strapi?.queue?.loadTracksFromURLs([track])
+  //   const track = event?.result;
+  //   await strapi?.queue?.loadTracksFromURLs([track])
 
-    console.log("new track loaded !!");
+  //   console.log("new track loaded !!");
 
-  },
-  afterUpdate: async (event) => {
-    console.log("afterUpdate");
+  // },
+  // afterUpdate: async (event) => {
+  //   console.log("afterUpdate");
 
-    const track = event?.result;
+  //   const track = event?.result;
 
-    // track.audioFile?.id
-    if (!strapi?.queue?.tracks?.find((t) => t.id === track?.audioFile?.id)) {
-      await strapi?.queue?.loadTracksFromURLs([track])
-    }
+  //   // track.audioFile?.id
+  //   if (!strapi?.queue?.tracks?.find((t) => t.id === track?.audioFile?.id)) {
+  //     await strapi?.queue?.loadTracksFromURLs([track])
+  //   }
     
-    console.log("new track loaded !!");
-  }
+  //   console.log("new track loaded !!");
+  // }
 }

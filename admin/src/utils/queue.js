@@ -10,7 +10,11 @@ const Throttle = require("throttle")
 ffprobe.path = ffprobeStatic.path
 
 class Queue {
-  constructor() {
+  constructor({
+    protocol = "http",
+    host = "localhost",
+    port = 1337,
+  }) {
     this.index = 0
     this.tracks = []
     this.clients = new Map()
@@ -18,6 +22,10 @@ class Queue {
     this.stream = null
     this.playing = false
     this.throttle = null
+
+    this.protocol = protocol
+    this.host = host
+    this.port = port
   }
 
   broadcast(chunk) {
@@ -66,16 +74,17 @@ class Queue {
 
   async loadTracksFromURLs(files) {
     const tracks = files.map(async (file) => {
-      const url = "http://127.0.0.1:1337" + file?.audioFile?.url
+      const url = `${this.protocol}://${this.host}:${this.port}${file?.audioFile?.url}`
       const bitrate = await this.getTrackBitrate(url)
       return {
+        trackId: file?.id,
         id: file?.audioFile?.id,
         url: url,
         bitrate
       }
     })
 
-    this.tracks = await Promise.all(tracks)
+    this.tracks.push(...await Promise.all(tracks))
 
     console.log(`Loaded ${this.tracks.length} tracks`)
   }
@@ -98,6 +107,7 @@ class Queue {
     
     const track = this.tracks[this.index]
 
+    console.log("choices", this.tracks.map((track) => track.url));
     console.log(`Playing track number ${this.index}: ${track.url}`)
     
     this.currentTrack = track
