@@ -89,6 +89,7 @@ const HomePage = () => {
   const pause = async () => {
     try {
       await queueSettingsRequests.pause()
+      setCurrentTrack(null)
     } catch (error) {
       throw error
     }
@@ -200,26 +201,23 @@ const HomePage = () => {
 
               endActions={
                 currentTrack && (
-                  <>
-                    <Box padding={2}>
-                      <Typography variant="sigma">Now Playing:</Typography>
-                    </Box>
-                    <Box padding={2}>
-                      <Typography variant="sigma">{ currentTrack?.title }</Typography>
-                    </Box>
-                  </>
+                  <Box>
+                    <Flex justifyContent="end">
+                      <Box padding={1}>
+                        <Typography variant="sigma">Now Playing:</Typography>
+                      </Box>
+                      <Box padding={1}>
+                        <Typography variant="sigma">{ currentTrack?.title }</Typography>
+                      </Box>
+                    </Flex>
+                    <Link href={`${window.location.origin}/strapi-audio-broadcast/stream`} isExternal>
+                      Audio stream is available here
+                    </Link>
+                  </Box>
                 )
               }
 
             />
-
-            {
-              isPlaying && (
-                <Link href={`${window.location.origin}/strapi-audio-broadcast/stream`} isExternal>
-                  Audio stream is available here
-                </Link>
-              )
-            }
 
             {/* all track can be added */}
 
