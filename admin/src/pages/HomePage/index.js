@@ -180,7 +180,7 @@ const HomePage = () => {
                   <Button
                     startIcon={<Play />}
                     loading={!!isPlaying}
-                    disabled={!!isPlaying || !queue.length && !initialSettings.queue.length}
+                    disabled={!!isPlaying || !queue.length || !initialSettings?.queue?.length || !!hasSettingsChanged}
                     onClick={play}
                   >
                     { isPlaying ? 'On Air' : 'Stream' }
