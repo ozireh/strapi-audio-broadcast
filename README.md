@@ -16,7 +16,8 @@ or
 
 2. Open the config/plugins.js file located in your Strapi project and add the plugin configuration to enable it and set the desired protocol:
 
-```module.exports = ({ env }) => ({
+```
+module.exports = ({ env }) => ({
   // ...
   'strapi-audio-broadcast': {
     enabled: true,
@@ -25,7 +26,8 @@ or
     },
   },
   // ...
-});```
+});
+```
 
 3. Build the Strapi application:
 
