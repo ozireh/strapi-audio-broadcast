@@ -56,4 +56,13 @@ module.exports = [
       policies: [],
     },
   },
+  {
+    method: 'GET',
+    path: '/current-track',
+    handler: 'queue-settings.getPublicCurrentTrack',
+    config: {
+      policies: [],
+      auth: false,
+    },
+  }
 ];

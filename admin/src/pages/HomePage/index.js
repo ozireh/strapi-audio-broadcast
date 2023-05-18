@@ -6,6 +6,7 @@
 
 import React, { useEffect, useState } from 'react';
 import pluginId from '../../pluginId';
+
 import { BaseHeaderLayout, Box, Button, ContentLayout, Table, Thead, Tr, Th, Tbody, Td, Typography, Flex, Grid, IconButton, IconButtonGroup, ActionLayout, Tag, EmptyStateLayout, Link, Alert, Tooltip } from '@strapi/design-system';
 import trackRequests from '../../api/track';
 import { ArrowDown, ArrowUp, Play, Plus, Trash } from '@strapi/icons';
@@ -224,7 +225,7 @@ const HomePage = () => {
       <Box background="neutral100">
         <BaseHeaderLayout
           title="Audio Broadcast"
-          subtitle="This is the plugin&apos;s description"
+          subtitle="A plugin for Strapi to broadcast audio files"
           primaryAction={
             <Button
               loading={isLoading}

@@ -123,6 +123,22 @@ module.exports = ({ strapi }) => ({
     );
 
     return track
+  },
+  async getPublicCurrentTrack() {
+    const queueCurrentTrack = strapi.queue.currentTrack
 
+    if (!queueCurrentTrack) return null
+
+    const track = await strapi.entityService.findOne(
+      'plugin::strapi-audio-broadcast.track',
+      queueCurrentTrack.trackId,
+      {
+        populate: [
+          "coverImage",
+        ]
+      }
+    );
+
+    return track
   }
 });

@@ -30,5 +30,11 @@ module.exports = ({ strapi }) => ({
       .plugin('strapi-audio-broadcast')
       .service('queue-settings')
       .getCurrentTrack()
+  },
+  async getPublicCurrentTrack(ctx) {
+    ctx.body = await strapi
+      .plugin('strapi-audio-broadcast')
+      .service('queue-settings')
+      .getPublicCurrentTrack()
   }
 });
