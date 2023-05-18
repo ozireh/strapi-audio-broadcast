@@ -23,6 +23,18 @@ module.exports = ({ strapi }) => ({
       port: strapi.config.get('server.port'),
     })
 
+    strapi.queue.onGetNextTrack(async () => {
+      strapi.entityService.update(
+        'plugin::strapi-audio-broadcast.queue-setting',
+        1,
+        {
+          data: {
+            nextTrack: null
+          }
+        }
+      );
+    })
+
     const tracks = await strapi.entityService.findMany(
       'plugin::strapi-audio-broadcast.track',
       {

@@ -19,6 +19,7 @@ class Queue {
     this.tracks = []
     this.queue = []
     this.clients = new Map()
+    this.nextTrackId = null
     this.currentTrack = null
     this.stream = null
     this.playing = false
@@ -27,6 +28,12 @@ class Queue {
     this.protocol = protocol
     this.host = host
     this.port = port
+
+    this.onNextTrackCallbacks = []
+  }
+
+  onGetNextTrack(callback) {
+    this.onNextTrackCallbacks.push(callback)
   }
 
   broadcast(chunk) {
@@ -103,7 +110,10 @@ class Queue {
     const currentQueueIndex = this.queue.findIndex((id) => id === this.currentTrack?.trackId) || 0
     const nextQueueIndex = currentQueueIndex + 1
 
-    if (!nextQueueIndex || nextQueueIndex >= this.queue.length) {
+    if (this.nextTrackId) {
+      this.index = this.tracks.findIndex((track) => track.trackId === this.nextTrackId)
+      this.nextTrackId = null
+    } else if (!nextQueueIndex || nextQueueIndex >= this.queue.length) {
       this.index = 0
     } else {
       this.index = nextQueueIndex
@@ -115,6 +125,10 @@ class Queue {
     console.log(`Playing track number ${this.index}: ${track.url}`)
     
     this.currentTrack = track
+
+    this.onNextTrackCallbacks.forEach(callback => {
+      callback()
+    })
 
     return track
   }

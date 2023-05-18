@@ -12,7 +12,7 @@
   },
   "pluginOptions": {
     "content-manager": {
-      "visible": false
+      "visible": true
     }
   },
   "attributes": {
@@ -23,6 +23,11 @@
     "queue": {
       "type": "json",
       "default": []
+    },
+    "nextTrack": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::strapi-audio-broadcast.track"
     }
   }
 }

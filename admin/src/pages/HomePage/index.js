@@ -114,6 +114,22 @@ const HomePage = () => {
     }
   }
 
+  const setNextTrack = async id => {
+    try {
+      const data = {
+        id: settings.id,
+        nextTrack: id
+      }
+
+      const response = await queueSettingsRequests.updateSettings(data)
+      setSuccessAlert('Next track set')
+      setInitialSettings(response?.data || {})
+    } catch (error) {
+      setErrorAlert(error?.response?.data?.message || error?.message || 'An error occured')
+      throw error
+    }
+  }
+
   // Effects
 
   useEffect(() => {
@@ -323,11 +339,11 @@ const HomePage = () => {
                             <Td>
                               {
                                 !currentTrack ? (
-                                  <Button variant='secondary'>Queuted</Button>
+                                  <Button onClick={() => setNextTrack(entry?.id)} variant='secondary'>Queuted</Button>
                                 ) : currentTrack?.id === entry?.id ? (
                                   <Loader small />
                                 ) : (
-                                  <Button variant='tertiary'>Waiting</Button>
+                                  <Button onClick={() => setNextTrack(entry?.id)} variant='tertiary'>Waiting</Button>
                                 )
                               }
                             </Td>

@@ -8,13 +8,20 @@ module.exports = {
     // console.log("new track loaded !!");
 
   },
-  afterUpdate: async (event) => {
+  afterUpdate: async () => {
     console.log("afterUpdate");
 
-    
-    const settings = event?.result;
+    // const settings = event?.result;
+    const settings = await strapi.entityService.findMany("plugin::strapi-audio-broadcast.queue-setting", {
+      populate: [
+        "nextTrack"
+      ]
+    })
     
     strapi.queue.queue = settings.queue
+    strapi.queue.nextTrackId = settings.nextTrack?.id || null
+
+    console.log(strapi.queue);
 
     const tracks = await strapi
       .plugin('strapi-audio-broadcast')
