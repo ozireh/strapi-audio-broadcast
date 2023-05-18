@@ -8,11 +8,15 @@ To install the Strapi Audio Broadcast plugin, follow these steps:
 
 1. Install the package using Yarn or npm:
 
-`yarn add strapi-audio-broadcast`
+```
+yarn add strapi-audio-broadcast
+```
 
 or
 
-`npm install strapi-audio-broadcast`
+```
+npm install strapi-audio-broadcast
+```
 
 2. Open the config/plugins.js file located in your Strapi project and add the plugin configuration to enable it and set the desired protocol:
 
