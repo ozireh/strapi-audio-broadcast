@@ -33,17 +33,25 @@ module.exports = ({ strapi }) => ({
       }
     );
 
-    const queueSettings = await strapi.entityService.findMany('plugin::strapi-audio-broadcast.queue-setting');
+    const queueSettings = await strapi.entityService.update(
+      'plugin::strapi-audio-broadcast.queue-setting',
+      1,
+      {
+        data: {
+          isPlaying: false
+        }
+      }
+    );
     
     strapi.queue.queue = queueSettings.queue || []
 
-    const queuedTracks = queueSettings.queue.map(id => tracks.find((track) => track.id === id))
+    // const queuedTracks = queueSettings.queue.map(id => tracks.find((track) => track.id === id))
 
-    if (queuedTracks.length) {
-      setTimeout(async () => {
-        await strapi.queue.loadTracksFromURLs(queuedTracks)
-      }, 1000);
-    }
+    // if (queuedTracks.length) {
+    //   setTimeout(async () => {
+    //     await strapi.queue.loadTracksFromURLs(queuedTracks)
+    //   }, 1000);
+    // }
   },
   async update(data) {
     try {
@@ -98,7 +106,7 @@ module.exports = ({ strapi }) => ({
     const ctx = strapi.requestContext.get()
 
     if (!queueCurrentTrack) return null
-    
+
     const track = await strapi.entityService.findOne(
       'plugin::strapi-audio-broadcast.track',
       queueCurrentTrack.trackId,

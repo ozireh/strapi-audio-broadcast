@@ -7,12 +7,15 @@
 import React, { useEffect, useState } from 'react';
 // import PropTypes from 'prop-types';
 import pluginId from '../../pluginId';
-import { BaseHeaderLayout, Box, Button, ContentLayout, HeaderLayout, Table, Thead, Tr, Th, Tbody, Td, Typography, BaseCheckbox, Tooltip, ToggleInput, Flex, Grid, IconButton, IconButtonGroup, ModalLayout, ModalHeader, ModalBody, TextInput, CarouselInput, CarouselSlide, CarouselImage, CarouselActions, ActionLayout, Tag, EmptyStateLayout, Link, Loader } from '@strapi/design-system';
+import { BaseHeaderLayout, Box, Button, ContentLayout, HeaderLayout, Table, Thead, Tr, Th, Tbody, Td, Typography, BaseCheckbox, Tooltip, ToggleInput, Flex, Grid, IconButton, IconButtonGroup, ModalLayout, ModalHeader, ModalBody, TextInput, CarouselInput, CarouselSlide, CarouselImage, CarouselActions, ActionLayout, Tag, EmptyStateLayout, Link, Loader, Alert } from '@strapi/design-system';
 import trackRequests from '../../api/track';
 import { ArrowDown, ArrowUp, CheckCircle, Information, Pencil, Play, Plus, Trash } from '@strapi/icons';
 import queueSettingsRequests from '../../api/queueSettings';
 
 const HomePage = () => {
+  const [defaultAlert, setDefaultAlert] = useState(null)
+  const [successAlert, setSuccessAlert] = useState(null)
+  const [errorAlert, setErrorAlert] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [initialSettings, setInitialSettings] = useState(null)
   const [currentTrack, setCurrentTrack] = useState(null)
@@ -68,8 +71,10 @@ const HomePage = () => {
       }
   
       const response = await queueSettingsRequests.updateSettings(data)
+      setSuccessAlert('Settings saved')
       setInitialSettings(response?.data || {})
     } catch (error) {
+      setErrorAlert(error?.response?.data?.message || error?.message || 'An error occured')
       throw error
     }
 
@@ -80,6 +85,7 @@ const HomePage = () => {
     try {
       await queueSettingsRequests.play()
     } catch (error) {
+      setErrorAlert(error?.response?.data?.message || error?.message || 'An error occured')
       throw error
     }
 
@@ -91,6 +97,7 @@ const HomePage = () => {
       await queueSettingsRequests.pause()
       setCurrentTrack(null)
     } catch (error) {
+      setErrorAlert(error?.response?.data?.message || error?.message || 'An error occured')
       throw error
     }
 
@@ -98,8 +105,13 @@ const HomePage = () => {
   }
 
   const checkCurrentTrack = async () => {
-    const track = await queueSettingsRequests.getCurrentTrack()
-    setCurrentTrack(track?.data || null)
+    try {
+      const track = await queueSettingsRequests.getCurrentTrack()
+      setCurrentTrack(track?.data || null)
+    } catch (error) {
+      setErrorAlert(error?.response?.data?.message || error?.message || 'An error occured')
+      throw error
+    }
   }
 
   // Effects
@@ -118,6 +130,7 @@ const HomePage = () => {
           setQueue(settingsResponse?.data?.queue)
         }
       } catch (error) {
+        setErrorAlert(error?.response?.data?.message || error?.message || 'An error occured')
         throw error
       }
 
@@ -132,7 +145,7 @@ const HomePage = () => {
   useEffect(() => {
     if (isPlaying) {
       checkCurrentTrack()
-      setCurrentTrackInterval(setInterval(checkCurrentTrack, 20000))
+      setCurrentTrackInterval(setInterval(checkCurrentTrack, 15000))
     } else {
       clearInterval(currentTrackInterval)
       setCurrentTrackInterval(null)
@@ -149,7 +162,42 @@ const HomePage = () => {
 
   return (
     <div>
-
+      {
+        defaultAlert && (
+          <Alert
+            closeLabel="Close alert"
+            title="Alert"
+            variant="default"
+            onClose={() => setDefaultAlert(null)}
+          >
+            { defaultAlert }
+          </Alert>
+        )
+      }
+      {
+        successAlert && (
+          <Alert
+            closeLabel="Close alert"
+            title="Success"
+            variant="success"
+            onClose={() => setSuccessAlert(null)}
+          >
+            { successAlert }
+          </Alert>
+        )
+      }
+      {
+        errorAlert && (
+          <Alert
+            closeLabel="Close alert"
+            title="Error"
+            variant="danger"
+            onClose={() => setErrorAlert(null)}
+          >
+            { errorAlert }
+          </Alert>
+        )
+      }
       <Box background="neutral100">
         <BaseHeaderLayout
           title="Audio Broadcast"
