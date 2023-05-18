@@ -60,14 +60,6 @@ module.exports = ({ strapi }) => ({
     );
     
     strapi.queue.queue = queueSettings.queue || []
-
-    // const queuedTracks = queueSettings.queue.map(id => tracks.find((track) => track.id === id))
-
-    // if (queuedTracks.length) {
-    //   setTimeout(async () => {
-    //     await strapi.queue.loadTracksFromURLs(queuedTracks)
-    //   }, 1000);
-    // }
   },
   async update(data) {
     try {
@@ -83,8 +75,6 @@ module.exports = ({ strapi }) => ({
           }
         }
       );
-
-      console.log(queueSettings);
   
       return queueSettings;
     } catch (error) {
