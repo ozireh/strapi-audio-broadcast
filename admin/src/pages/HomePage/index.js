@@ -7,7 +7,7 @@
 import React, { useEffect, useState } from 'react';
 // import PropTypes from 'prop-types';
 import pluginId from '../../pluginId';
-import { BaseHeaderLayout, Box, Button, ContentLayout, HeaderLayout, Table, Thead, Tr, Th, Tbody, Td, Typography, BaseCheckbox, Tooltip, ToggleInput, Flex, Grid, IconButton, IconButtonGroup, ModalLayout, ModalHeader, ModalBody, TextInput, CarouselInput, CarouselSlide, CarouselImage, CarouselActions, ActionLayout, Tag, EmptyStateLayout, Link, Loader, Alert } from '@strapi/design-system';
+import { BaseHeaderLayout, Box, Button, ContentLayout, HeaderLayout, Table, Thead, Tr, Th, Tbody, Td, Typography, BaseCheckbox, Tooltip, ToggleInput, Flex, Grid, IconButton, IconButtonGroup, ModalLayout, ModalHeader, ModalBody, TextInput, CarouselInput, CarouselSlide, CarouselImage, CarouselActions, ActionLayout, Tag, EmptyStateLayout, Link, Loader, Alert, LinkButton } from '@strapi/design-system';
 import trackRequests from '../../api/track';
 import { ArrowDown, ArrowUp, CheckCircle, Information, Pencil, Play, Plus, Trash } from '@strapi/icons';
 import queueSettingsRequests from '../../api/queueSettings';
@@ -89,6 +89,7 @@ const HomePage = () => {
       throw error
     }
 
+    setDefaultAlert(null)
     setIsPlaying(true)
   }
 
@@ -122,7 +123,7 @@ const HomePage = () => {
       }
 
       const response = await queueSettingsRequests.updateSettings(data)
-      setSuccessAlert('Next track set')
+      setDefaultAlert('Next track set')
       setInitialSettings(response?.data || {})
     } catch (error) {
       setErrorAlert(error?.response?.data?.message || error?.message || 'An error occured')
@@ -176,6 +177,11 @@ const HomePage = () => {
     })
   }, [queue])  
 
+  useEffect(() => {
+    console.log(initialSettings);
+  }, [initialSettings])
+  
+
   return (
     <div>
       {
@@ -185,6 +191,11 @@ const HomePage = () => {
             title="Alert"
             variant="default"
             onClose={() => setDefaultAlert(null)}
+            action={
+              <Link onClick={play}>
+                Start streaming now to hear your track
+              </Link>
+            }
           >
             { defaultAlert }
           </Alert>
@@ -338,12 +349,33 @@ const HomePage = () => {
                           <Tr key={`queued-track-${entry.id}`}>
                             <Td>
                               {
-                                !currentTrack ? (
-                                  <Button onClick={() => setNextTrack(entry?.id)} variant='secondary'>Queuted</Button>
-                                ) : currentTrack?.id === entry?.id ? (
-                                  <Loader small />
+                                currentTrack?.id === entry?.id ? (
+                                  <Button
+                                    loading
+                                    variant='secondary'
+                                  >
+                                    Is playing
+                                  </Button>
+                                ) : initialSettings?.nextTrack?.id === entry?.id ? (
+                                  <Button
+                                    loading
+                                    onClick={() => setNextTrack(null)}
+                                    variant='secondary'
+                                  >
+                                    Imminent play
+                                  </Button>
+                                ) : !currentTrack ? (
+                                  <Button
+                                    onClick={() => setNextTrack(entry?.id)}
+                                    variant='secondary'
+                                    startIcon={<Play />}
+                                  >
+                                    Next play
+                                  </Button>
                                 ) : (
-                                  <Button onClick={() => setNextTrack(entry?.id)} variant='tertiary'>Waiting</Button>
+                                  <Button onClick={() => setNextTrack(entry?.id)} variant='tertiary'>
+                                    Queued
+                                  </Button>
                                 )
                               }
                             </Td>

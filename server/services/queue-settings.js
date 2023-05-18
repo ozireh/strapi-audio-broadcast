@@ -5,10 +5,14 @@ module.exports = ({ strapi }) => ({
   async find() {
     try {
       const ctx = strapi.requestContext.get()
-  
-      const queueSettings = await strapi.entityService.findOne(
+
+      const queueSettings = await strapi.entityService.findMany(
         'plugin::strapi-audio-broadcast.queue-setting',
-        ctx.query
+        {
+          populate: [
+            "nextTrack"
+          ]
+        }
       );
   
       return queueSettings;
@@ -71,11 +75,16 @@ module.exports = ({ strapi }) => ({
         'plugin::strapi-audio-broadcast.queue-setting',
         data?.id,
         {
+          populate: [
+            "nextTrack"
+          ],
           data: {
             ...data
           }
         }
       );
+
+      console.log(queueSettings);
   
       return queueSettings;
     } catch (error) {
