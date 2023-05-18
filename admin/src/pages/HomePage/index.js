@@ -6,7 +6,7 @@
 
 import React, { useEffect, useState } from 'react';
 import pluginId from '../../pluginId';
-import { BaseHeaderLayout, Box, Button, ContentLayout, Table, Thead, Tr, Th, Tbody, Td, Typography, Flex, Grid, IconButton, IconButtonGroup, ActionLayout, Tag, EmptyStateLayout, Link, Alert } from '@strapi/design-system';
+import { BaseHeaderLayout, Box, Button, ContentLayout, Table, Thead, Tr, Th, Tbody, Td, Typography, Flex, Grid, IconButton, IconButtonGroup, ActionLayout, Tag, EmptyStateLayout, Link, Alert, Tooltip } from '@strapi/design-system';
 import trackRequests from '../../api/track';
 import { ArrowDown, ArrowUp, Play, Plus, Trash } from '@strapi/icons';
 import queueSettingsRequests from '../../api/queueSettings';
@@ -186,9 +186,11 @@ const HomePage = () => {
             variant="default"
             onClose={() => setDefaultAlert(null)}
             action={
-              <Link onClick={play}>
-                Start streaming now to hear your track
-              </Link>
+              !isPlaying && (
+                <Link onClick={play}>
+                  Start streaming now to hear your track
+                </Link>
+              )
             }
           >
             { defaultAlert }
@@ -359,17 +361,25 @@ const HomePage = () => {
                                     Imminent play
                                   </Button>
                                 ) : !currentTrack ? (
-                                  <Button
-                                    onClick={() => setNextTrack(entry?.id)}
-                                    variant='secondary'
-                                    startIcon={<Play />}
-                                  >
-                                    Next play
-                                  </Button>
+                                  <Tooltip description="Click to set as next track">
+                                    <Button
+                                      variant='secondary'
+                                      onClick={() => setNextTrack(entry?.id)}
+                                      startIcon={<Play />}
+                                    >
+                                      Next play
+                                    </Button>
+                                  </Tooltip>
                                 ) : (
-                                  <Button onClick={() => setNextTrack(entry?.id)} variant='tertiary'>
-                                    Queued
-                                  </Button>
+                                  <Tooltip description="Click to set as next track">
+                                    <Button
+                                      variant='tertiary'
+                                      onClick={() => setNextTrack(entry?.id)}
+                                      startIcon={<Play />}
+                                    >
+                                      Queued
+                                    </Button>
+                                  </Tooltip>
                                 )
                               }
                             </Td>

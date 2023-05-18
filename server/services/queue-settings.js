@@ -4,8 +4,6 @@ const Queue = require('../../admin/src/utils/queue')
 module.exports = ({ strapi }) => ({
   async find() {
     try {
-      const ctx = strapi.requestContext.get()
-
       const queueSettings = await strapi.entityService.findMany(
         'plugin::strapi-audio-broadcast.queue-setting',
         {
@@ -20,46 +18,46 @@ module.exports = ({ strapi }) => ({
       throw error  
     }
   },
-  async init() {    
-    strapi.queue = new Queue({
-      protocol: strapi.config.get('server.protocol'),
-      host: strapi.config.get('server.host'),
-      port: strapi.config.get('server.port'),
-    })
-
-    strapi.queue.onGetNextTrack(async () => {
-      strapi.entityService.update(
+  async init() {
+    try {
+      const protocol = strapi.config.get('plugin.strapi-audio-broadcast')?.protocol
+  
+      if (protocol !== 'http' && protocol !== 'https') {
+        throw new Error('Invalid protocol')
+      }
+  
+      strapi.queue = new Queue({
+        protocol: strapi.config.get('plugin.protocol'),
+        host: strapi.config.get('server.host'),
+        port: strapi.config.get('server.port'),
+      })
+  
+      strapi.queue.onGetNextTrack(async () => {
+        strapi.entityService.update(
+          'plugin::strapi-audio-broadcast.queue-setting',
+          1,
+          {
+            data: {
+              nextTrack: null
+            }
+          }
+        );
+      })
+  
+      const queueSettings = await strapi.entityService.update(
         'plugin::strapi-audio-broadcast.queue-setting',
         1,
         {
           data: {
-            nextTrack: null
+            isPlaying: false
           }
         }
       );
-    })
-
-    const tracks = await strapi.entityService.findMany(
-      'plugin::strapi-audio-broadcast.track',
-      {
-        _limit: -1,
-        populate: [
-          "audioFile"
-        ]
-      }
-    );
-
-    const queueSettings = await strapi.entityService.update(
-      'plugin::strapi-audio-broadcast.queue-setting',
-      1,
-      {
-        data: {
-          isPlaying: false
-        }
-      }
-    );
-    
-    strapi.queue.queue = queueSettings.queue || []
+      
+      strapi.queue.queue = queueSettings.queue || []
+    } catch (error) {
+      throw error
+    }
   },
   async update(data) {
     try {

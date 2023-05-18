@@ -22,7 +22,6 @@ module.exports = [
     handler: 'queue-settings.find',
     config: {
       policies: [],
-      auth: false,
     },
   },
   {
@@ -31,7 +30,6 @@ module.exports = [
     handler: 'queue-settings.update',
     config: {
       policies: [],
-      auth: false,
     },
   },
   {
@@ -40,7 +38,6 @@ module.exports = [
     handler: 'queue-settings.play',
     config: {
       policies: [],
-      auth: false,
     },
   },
   {
@@ -49,7 +46,6 @@ module.exports = [
     handler: 'queue-settings.pause',
     config: {
       policies: [],
-      auth: false,
     },
   },
   {
@@ -58,7 +54,6 @@ module.exports = [
     handler: 'queue-settings.getCurrentTrack',
     config: {
       policies: [],
-      auth: false,
     },
   },
 ];
