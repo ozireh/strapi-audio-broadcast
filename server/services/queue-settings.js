@@ -49,12 +49,26 @@ module.exports = ({ strapi }) => ({
         1,
         {
           data: {
-            isPlaying: false
+            isPlaying: false,
+            queue: [],
           }
         }
       );
+
+      if (!queueSettings) {
+        await strapi.entityService.create(
+          'plugin::strapi-audio-broadcast.queue-setting',
+          {
+            data: {
+              id: 1,
+              isPlaying: false,
+              queue: [],
+            }
+          })
+      }
       
-      strapi.queue.queue = queueSettings.queue || []
+      strapi.queue.queue = queueSettings?.queue || []
+
     } catch (error) {
       throw error
     }
@@ -63,7 +77,7 @@ module.exports = ({ strapi }) => ({
     try {
       const queueSettings = await strapi.entityService.update(
         'plugin::strapi-audio-broadcast.queue-setting',
-        data?.id,
+        1,
         {
           populate: [
             "nextTrack"
