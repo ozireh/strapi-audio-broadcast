@@ -58,3 +58,7 @@ After installing and configuring the Strapi Audio Broadcast plugin, you can star
 
 
 5. You can play or stop the audio stream using the controls provided in the "Audio Broadcast" menu.
+
+## Credits
+
+I would like to acknowledge and reference this repository [https://github.com/WoolDoughnut310/radio-broadcast](https://github.com/WoolDoughnut310/radio-broadcast) as the source of inspiration for the broadcast logic in the Strapi Audio Broadcast plugin.
