@@ -20,5 +20,24 @@ or
 npm install strapi-audio-broadcast@https://github.com/ozireh/strapi-audio-broadcast#main
 ```
 
+2. Open the config/plugins.js file located in your Strapi project and add the plugin configuration to enable it and set the desired protocol:
+
+```javascript
+module.exports = ({ env }) => ({
+  'strapi-audio-broadcast': {
+    enabled: true,
+    config: {
+      protocol: env('PROTOCOL', 'http'),
+    },
+  },
+});
+```
+
+3. Build the Strapi application:
+
+```sh
+yarn build
+```
+
 ## Credits
 -  Broadcast logic [https://github.com/WoolDoughnut310/radio-broadcast](https://github.com/WoolDoughnut310/radio-broadcast)
