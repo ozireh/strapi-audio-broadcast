@@ -1,6 +1,6 @@
 {
   "name": "strapi-audio-broadcast",
-  "version": "0.0.0",
+  "version": "0.1.0-alpha.1",
   "description": "A plugin for Strapi to broadcast audio files.",
   "strapi": {
     "name": "strapi-audio-broadcast",
