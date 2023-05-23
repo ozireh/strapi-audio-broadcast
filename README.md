@@ -1,21 +1,23 @@
 # Strapi Audio Broadcast Plugin
 
-The Strapi Audio Broadcast plugin allows you to broadcast music and stream audio tracks in your Strapi application. This plugin provides a seamless integration for managing and playing audio tracks within the Strapi Admin panel.
+Strapi Audio Broadcast plugin allows you to broadcast music and stream audio tracks in your Strapi application. This plugin provides a seamless integration for managing and playing audio tracks within the Strapi Admin panel.
 
 ## Installation
 
-To install the Strapi Audio Broadcast plugin, follow these steps:
+###### Note: This plugin is currently in an early development stage and is not considered stable. Use it at your own risk.
+
+This installation method will soon be replaced by a more common approach. However, for the time being, you can follow these steps to temporarily test the Strapi Audio Broadcast plugin:
 
 1. Install the package using Yarn or npm:
 
 ```sh
-yarn add strapi-audio-broadcast
+yarn add strapi-audio-broadcast@https://github.com/ozireh/strapi-audio-broadcast#0.1.0-alpha.1
 ```
 
 or
 
 ```sh
-npm install strapi-audio-broadcast
+npm install strapi-audio-broadcast@https://github.com/ozireh/strapi-audio-broadcast#0.1.0-alpha.1
 ```
 
 2. Open the config/plugins.js file located in your Strapi project and add the plugin configuration to enable it and set the desired protocol:
@@ -58,3 +60,6 @@ After installing and configuring the Strapi Audio Broadcast plugin, you can star
 
 
 5. You can play or stop the audio stream using the controls provided in the "Audio Broadcast" menu.
+
+## Credits
+-  Broadcast logic [https://github.com/WoolDoughnut310/radio-broadcast](https://github.com/WoolDoughnut310/radio-broadcast)
