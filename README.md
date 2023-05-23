@@ -48,13 +48,11 @@ After installing and configuring the Strapi Audio Broadcast plugin, you can star
 
 2. You will find a new collection type called "Track". Use this collection to add and upload audio tracks that you want to broadcast.
 
-<img width="1437" alt="Capture d’écran 2023-05-18 à 21 52 00" src="https://github.com/ozireh/strapi-audio-broadcast/assets/34472082/98c1d38b-0ff5-4594-bd39-03361bed9ac1">
-
+<img width="1437" alt="Capture d’écran 2023-05-18 à 21 52 00" src="https://github.com/ozireh/strapi-audio-broadcast/assets/34472082/362b8019-c71a-48b4-9acd-9db40d90f133">
 
 3. Navigate to the "Audio Broadcast" menu item in the Admin panel. Here, you can configure the order of the played tracks and control the audio stream.
 
-<img width="1438" alt="Capture d’écran 2023-05-18 à 22 19 24" src="https://github.com/ozireh/strapi-audio-broadcast/assets/34472082/5364e6f2-9286-4a82-a70b-ef84ad267a1f">
-
+<img width="1438" alt="Capture d’écran 2023-05-18 à 22 19 24" src="https://github.com/ozireh/strapi-audio-broadcast/assets/34472082/2a515d44-cb0e-4648-ba08-daa79d2eac80">
 
 4. To start the audio stream, use the following URL: [http://localhost:1337/strapi-audio-broadcast/stream](http://localhost:1337/strapi-audio-broadcast/stream)
 
