@@ -1,5 +1,5 @@
 {
-  "name": "strapi-audio-broadcast",
+  "name": "@ozireh/strapi-audio-broadcast",
   "version": "0.1.0-alpha.1",
   "description": "A plugin for Strapi to broadcast audio files.",
   "strapi": {
@@ -34,7 +34,8 @@
     "styled-components": "^5.3.6"
   },
   "author": {
-    "name": "A Strapi developer"
+    "name": "@ozireh",
+    "url": "https://soundcloud.com/261ssh"
   },
   "maintainers": [
     {
