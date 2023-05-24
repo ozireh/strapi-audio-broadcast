@@ -11,13 +11,13 @@ This installation method will soon be replaced by a more common approach. Howeve
 1. Install the package using Yarn or npm:
 
 ```sh
-yarn add strapi-audio-broadcast@https://github.com/ozireh/strapi-audio-broadcast#main
+yarn add @ozireh/strapi-audio-broadcast
 ```
 
 or
 
 ```sh
-npm install strapi-audio-broadcast@https://github.com/ozireh/strapi-audio-broadcast#main
+npm install @ozireh/strapi-audio-broadcast
 ```
 
 2. Open the config/plugins.js file located in your Strapi project and add the plugin configuration to enable it and set the desired protocol:
