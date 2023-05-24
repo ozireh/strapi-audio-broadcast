@@ -27,6 +27,6 @@ jobs:
 
       - name: Publish tagged version
         if: steps.release.outputs.tag != ''
-        run: npm publish --tag ${{ steps.release.outputs.tag }}
+        run: npm publish --tag ${{ steps.release.outputs.tag }} --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
