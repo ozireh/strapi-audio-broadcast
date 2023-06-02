@@ -6,7 +6,7 @@ Strapi Audio Broadcast plugin allows you to broadcast music and stream audio tra
 
 ###### Note: This plugin is currently in an early development stage and is not considered stable. Use it at your own risk.
 
-This installation method will soon be replaced by a more common approach. However, for the time being, you can follow these steps to temporarily test the Strapi Audio Broadcast plugin:
+You can follow these steps to test the Strapi Audio Broadcast plugin:
 
 1. Install the package using Yarn or npm:
 
