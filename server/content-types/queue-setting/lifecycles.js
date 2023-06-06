@@ -6,8 +6,8 @@ module.exports = {
       ]
     })
     
-    strapi.queue.queue = settings.queue
-    strapi.queue.nextTrackId = settings.nextTrack?.id || null
+    strapi.queue.queue = settings?.queue || []
+    strapi.queue.nextTrackId = settings?.nextTrack?.id || null
 
     const tracks = await strapi
       .plugin('strapi-audio-broadcast')
@@ -16,7 +16,7 @@ module.exports = {
 
 
     let tracksToLoad = []
-    const queuedTracks = settings.queue.map(id => tracks.find((track) => track.id === id))
+    const queuedTracks = settings?.queue?.map(id => tracks.find((track) => track.id === id)) || []
 
     queuedTracks.forEach(track => {
       if (!strapi?.queue?.tracks?.find((t) => t.id == track?.audioFile?.id && t.trackId == track?.id)) {
